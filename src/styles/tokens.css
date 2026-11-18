@@ -1,0 +1,180 @@
+/**
+ * Nusa Reader — Design Tokens
+ * Provides a serene, book-first aesthetic with Ivory, Charcoal, and Sage palette.
+ * Supports light, sepia, and dark themes seamlessly via CSS variables.
+ */
+
+:root {
+  /* Fonts */
+  --font-serif: 'Newsreader', 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Typography Scale */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.84375rem;  /* 13.5px */
+  --text-base: 0.9375rem; /* 15px */
+  --text-lg: 1.0625rem;   /* 17px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+
+  /* Spacing Scale */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 240ms;
+  --duration-slow: 380ms;
+
+  /* Z-indices */
+  --z-base: 1;
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+}
+
+/* Light Theme (Default: Ivory, Charcoal, Soft Sage) */
+:root,
+[data-theme='light'] {
+  --color-bg: #FBF9F5;
+  --color-bg-secondary: #F4EFE6;
+  --color-bg-tertiary: #ECE6DA;
+  
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #FCFBF9;
+  --color-surface-active: #F7F5EE;
+  --color-surface-elevated: #FFFFFF;
+
+  --color-text-primary: #22211F;
+  --color-text-secondary: #6B655B;
+  --color-text-tertiary: #968F84;
+  --color-text-muted: #B4ACA1;
+
+  --color-accent: #4A6953;
+  --color-accent-hover: #3C5543;
+  --color-accent-subtle: #EBF2EC;
+  --color-accent-border: #BCD1C0;
+  --color-accent-contrast: #FFFFFF;
+
+  --color-border: rgba(45, 40, 35, 0.08);
+  --color-border-hover: rgba(45, 40, 35, 0.16);
+  --color-border-focus: #4A6953;
+
+  --color-danger: #B34033;
+  --color-danger-subtle: #FDF1F0;
+  --color-danger-border: #F3C4BF;
+
+  --color-warning: #B8732A;
+  --color-warning-subtle: #FEF7ED;
+
+  --shadow-sm: 0 1px 2px rgba(45, 40, 35, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(45, 40, 35, 0.06), 0 2px 6px -1px rgba(45, 40, 35, 0.03);
+  --shadow-lg: 0 12px 28px -6px rgba(45, 40, 35, 0.09), 0 4px 12px -2px rgba(45, 40, 35, 0.04);
+  --shadow-book: 0 8px 20px -4px rgba(45, 40, 35, 0.12), 0 3px 6px -2px rgba(45, 40, 35, 0.06);
+  --shadow-book-hover: 0 16px 32px -6px rgba(45, 40, 35, 0.18), 0 6px 12px -3px rgba(45, 40, 35, 0.09);
+
+  --spine-sheen: linear-gradient(90deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.02) 20%, rgba(0,0,0,0.06) 100%);
+  --spine-shadow: inset 4px 0 6px -2px rgba(0,0,0,0.18);
+}
+
+/* Sepia Theme (Warm Parchment, Deep Umber, Earthy Sage) */
+[data-theme='sepia'] {
+  --color-bg: #F4ECE1;
+  --color-bg-secondary: #E9DFD0;
+  --color-bg-tertiary: #DFD3C2;
+
+  --color-surface: #FAF5EC;
+  --color-surface-hover: #F6EFE3;
+  --color-surface-active: #EFE6D8;
+  --color-surface-elevated: #FDF9F2;
+
+  --color-text-primary: #342C23;
+  --color-text-secondary: #6F6253;
+  --color-text-tertiary: #978775;
+  --color-text-muted: #B8A997;
+
+  --color-accent: #5A6D52;
+  --color-accent-hover: #485841;
+  --color-accent-subtle: #E7EDDF;
+  --color-accent-border: #C0CCB5;
+  --color-accent-contrast: #FAF5EC;
+
+  --color-border: rgba(52, 44, 35, 0.1);
+  --color-border-hover: rgba(52, 44, 35, 0.2);
+  --color-border-focus: #5A6D52;
+
+  --color-danger: #9E372D;
+  --color-danger-subtle: #F7EAE8;
+  --color-danger-border: #E8BDB7;
+
+  --shadow-sm: 0 1px 2px rgba(52, 44, 35, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(52, 44, 35, 0.07);
+  --shadow-lg: 0 12px 28px -6px rgba(52, 44, 35, 0.1);
+  --shadow-book: 0 8px 20px -4px rgba(52, 44, 35, 0.14);
+  --shadow-book-hover: 0 16px 32px -6px rgba(52, 44, 35, 0.2);
+
+  --spine-sheen: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 20%, rgba(0,0,0,0.08) 100%);
+  --spine-shadow: inset 4px 0 6px -2px rgba(0,0,0,0.22);
+}
+
+/* Dark Theme (Deep Obsidian / Espresso, Soft Warm Light, Muted Mint-Sage) */
+[data-theme='dark'] {
+  --color-bg: #151514;
+  --color-bg-secondary: #1C1B19;
+  --color-bg-tertiary: #242320;
+
+  --color-surface: #1E1D1B;
+  --color-surface-hover: #262522;
+  --color-surface-active: #2D2C28;
+  --color-surface-elevated: #262522;
+
+  --color-text-primary: #EBE7DD;
+  --color-text-secondary: #A09A8F;
+  --color-text-tertiary: #746F65;
+  --color-text-muted: #545048;
+
+  --color-accent: #789980;
+  --color-accent-hover: #8EAE95;
+  --color-accent-subtle: #1F2A22;
+  --color-accent-border: #354739;
+  --color-accent-contrast: #121A14;
+
+  --color-border: rgba(235, 231, 221, 0.08);
+  --color-border-hover: rgba(235, 231, 221, 0.16);
+  --color-border-focus: #789980;
+
+  --color-danger: #D45B4D;
+  --color-danger-subtle: #2C1816;
+  --color-danger-border: #522723;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 30px -6px rgba(0, 0, 0, 0.55);
+  --shadow-book: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  --shadow-book-hover: 0 16px 36px -6px rgba(0, 0, 0, 0.65);
+
+  --spine-sheen: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 20%, rgba(0,0,0,0.4) 100%);
+  --spine-shadow: inset 4px 0 6px -2px rgba(0,0,0,0.5);
+}

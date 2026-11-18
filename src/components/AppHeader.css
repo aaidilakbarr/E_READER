@@ -1,0 +1,188 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+  transition: background-color var(--duration-normal) var(--ease-spring),
+              border-color var(--duration-normal) var(--ease-spring);
+}
+
+.app-header__container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+/* Brand Identity */
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+
+.app-header__logo-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.app-header__brand:hover .app-header__logo-mark {
+  transform: rotate(-3deg) scale(1.05);
+}
+
+.app-header__brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  line-height: 1.1;
+}
+
+.app-header__tagline {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-top: 2px;
+}
+
+/* Navigation Tabs */
+.app-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.5rem 0.875rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.nav-tab:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+.nav-tab--active {
+  color: var(--color-accent);
+  background-color: var(--color-accent-subtle);
+  font-weight: 600;
+}
+
+.nav-tab__count {
+  font-size: 0.72rem;
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+}
+
+.nav-tab--active .nav-tab__count {
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+/* Right Actions */
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.privacy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.privacy-badge--clickable {
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.privacy-badge--clickable:hover {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-hover);
+  color: var(--color-text-primary);
+}
+
+.privacy-badge__icon {
+  color: var(--color-accent);
+}
+
+/* Theme Toggle Button Group */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 2px;
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  color: var(--color-text-tertiary);
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.theme-btn:hover {
+  color: var(--color-text-primary);
+}
+
+.theme-btn--active {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+  .app-header__container {
+    padding: var(--space-3) var(--space-4);
+  }
+  .privacy-badge {
+    display: none;
+  }
+}
