@@ -59,6 +59,7 @@ export function useEpub({
   containerRef,
   bookFile,
   initialCfi,
+  reloadKey = 0,
   preferences,
   onLocationChange,
   onError,
@@ -75,6 +76,7 @@ export function useEpub({
   const renditionRef = useRef<Rendition | null>(null);
   const objectUrlRef = useRef<string | null>(null);
   const preferencesRef = useRef<ReaderPreferences>(preferences);
+  const initialCfiRef = useRef<string | undefined>(initialCfi);
 
   const onLocationChangeRef = useRef(onLocationChange);
   const onErrorRef = useRef(onError);
@@ -82,6 +84,10 @@ export function useEpub({
   useEffect(() => {
     preferencesRef.current = preferences;
   }, [preferences]);
+
+  useEffect(() => {
+    initialCfiRef.current = initialCfi;
+  }, [initialCfi]);
 
   useEffect(() => {
     onLocationChangeRef.current = onLocationChange;
@@ -136,6 +142,8 @@ export function useEpub({
       URL.revokeObjectURL(objectUrlRef.current);
       objectUrlRef.current = null;
     }
+
+    setIsBookReady(false);
   }, []);
 
   // Update theme and typography without reloading book
@@ -157,8 +165,14 @@ export function useEpub({
   useEffect(() => {
     let isCancelled = false;
 
-    if (!containerRef.current || !bookFile) {
+    if (!containerRef.current) {
       setIsLoading(false);
+      return;
+    }
+
+    if (!bookFile) {
+      // Wait for bookFile (e.g. while reading progress or sample fetch is still in flight)
+      setIsLoading(true);
       return;
     }
 
@@ -167,6 +181,8 @@ export function useEpub({
     setErrorMessage(null);
 
     const initBook = async () => {
+      let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
       try {
         let bookInput: string | ArrayBuffer;
 
@@ -180,6 +196,17 @@ export function useEpub({
 
         const book = ePub(bookInput);
         bookRef.current = book;
+
+        // Fail fast if epubjs emits openFailed (instead of hanging until timeout)
+        const openFailedPromise = new Promise<never>((_, reject) => {
+          book.on('openFailed', (err: unknown) => {
+            const msg =
+              err instanceof Error && err.message
+                ? `Gagal membuka berkas EPUB: ${err.message}`
+                : 'Berkas EPUB tidak valid, rusak, atau terenkripsi.';
+            reject(new Error(msg));
+          });
+        });
 
         // Render to DOM container immediately
         if (!containerRef.current) return;
@@ -201,13 +228,19 @@ export function useEpub({
         // Apply initial preferences
         applyPreferences(preferencesRef.current);
 
-        // Fail-safe timeout for initial display
-        const displayPromise = rendition.display(initialCfi || undefined);
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Waktu tunggu pembacaan buku habis (15 detik).')), 15000)
+        // Fail-safe timeout for initial display + openFailed race
+        const displayPromise = book.opened.then(() =>
+          rendition.display(initialCfiRef.current || undefined)
         );
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          timeoutId = setTimeout(
+            () => reject(new Error('Waktu tunggu pembacaan buku habis (15 detik).')),
+            15000
+          );
+        });
 
-        await Promise.race([displayPromise, timeoutPromise]);
+        await Promise.race([displayPromise, openFailedPromise, timeoutPromise]);
+        if (timeoutId) clearTimeout(timeoutId);
         if (isCancelled) return;
 
         setIsBookReady(true);
@@ -282,6 +315,7 @@ export function useEpub({
           })
           .catch(() => {});
       } catch (err: unknown) {
+        if (timeoutId) clearTimeout(timeoutId);
         if (isCancelled) return;
         const error = err instanceof Error ? err : new Error('Gagal merender berkas EPUB.');
         setErrorMessage(error.message);
@@ -296,7 +330,7 @@ export function useEpub({
       isCancelled = true;
       cleanup();
     };
-  }, [bookFile, containerRef, initialCfi, cleanup, applyPreferences]);
+  }, [bookFile, containerRef, reloadKey, cleanup, applyPreferences]);
 
   // Keep theme & typography updated when preferences prop changes
   useEffect(() => {

@@ -19,6 +19,7 @@ export interface UseEpubOptions {
   containerRef: React.RefObject<HTMLDivElement | null>;
   bookFile?: Blob | string;
   initialCfi?: string;
+  reloadKey?: number;
   preferences: ReaderPreferences;
   onLocationChange?: (location: LocationInfo) => void;
   onError?: (error: Error) => void;

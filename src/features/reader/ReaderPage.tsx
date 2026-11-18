@@ -31,27 +31,33 @@ export const ReaderPage: React.FC<ReaderPageProps> = ({
   const [showSettings, setShowSettings] = useState(false);
   const [isTocOpen, setIsTocOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
   const [bookSource, setBookSource] = useState<Blob | string | undefined>(book.fileBlob);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // If book has no fileBlob (e.g. seeded sample book), fetch bundled sample.epub
+  // Sync bookSource when switching books or fallback to bundled sample.epub
   useEffect(() => {
     let isMounted = true;
-    if (!book.fileBlob) {
-      fetch('/sample.epub')
-        .then((res) => (res.ok ? res.blob() : null))
-        .then((blob) => {
-          if (isMounted && blob) {
-            setBookSource(blob);
-          }
-        })
-        .catch(() => {});
+    if (book.fileBlob) {
+      setBookSource(book.fileBlob);
+      return;
     }
+
+    setBookSource(undefined);
+    fetch('/sample.epub')
+      .then((res) => (res.ok ? res.blob() : null))
+      .then((blob) => {
+        if (isMounted && blob) {
+          setBookSource(blob);
+        }
+      })
+      .catch(() => {});
+
     return () => {
       isMounted = false;
     };
-  }, [book.fileBlob]);
+  }, [book.id, book.fileBlob]);
 
   const { savedCfi, isProgressLoaded, recordProgress } = useReadingProgress({
     bookId: book.id,
@@ -71,6 +77,7 @@ export const ReaderPage: React.FC<ReaderPageProps> = ({
     containerRef,
     bookFile: isProgressLoaded ? bookSource : undefined,
     initialCfi: savedCfi,
+    reloadKey: retryKey,
     preferences,
     onLocationChange: handleLocationChange,
   });
@@ -320,6 +327,7 @@ export const ReaderPage: React.FC<ReaderPageProps> = ({
         <EpubViewer
           epub={epub}
           containerRef={containerRef}
+          onRetry={() => setRetryKey((prev) => prev + 1)}
           maxWidth={preferences.contentWidth}
         />
 

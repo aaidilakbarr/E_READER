@@ -14,9 +14,12 @@ export function useReadingProgress({ bookId }: UseReadingProgressProps) {
     bookIdRef.current = bookId;
   }, [bookId]);
 
-  // Load initial progress on mount
+  // Load initial progress on mount or when bookId changes
   useEffect(() => {
     let isMounted = true;
+    setIsProgressLoaded(false);
+    setSavedCfi(undefined);
+
     loadProgress(bookId).then((progress) => {
       if (isMounted) {
         if (progress?.cfi) {

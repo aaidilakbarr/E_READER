@@ -1,5 +1,6 @@
 .reader-view {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg);
@@ -171,6 +172,7 @@
 /* Stage & Surface */
 .reader-stage {
   flex: 1;
+  min-height: 0;
   display: flex;
   align-items: stretch;
   justify-content: space-between;

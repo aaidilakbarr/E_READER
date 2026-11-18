@@ -86,6 +86,12 @@ export async function importEpubFile(file: File): Promise<BookRecord> {
     throw new Error(`Buku "${finalTitle}" sudah ada di perpustakaan Anda.`);
   }
 
+  // Clone file bytes into an independent Blob so IndexedDB doesn't rely on a mutable OS File handle
+  const fileBytes = await file.arrayBuffer();
+  const storedBlob = new Blob([fileBytes], {
+    type: file.type || 'application/epub+zip',
+  });
+
   const newBook: BookRecord = {
     id: `book-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     title: finalTitle,
@@ -94,7 +100,7 @@ export async function importEpubFile(file: File): Promise<BookRecord> {
     language: extracted.language,
     identifier: extracted.identifier,
     coverUrl: extracted.coverUrl,
-    fileBlob: file,
+    fileBlob: storedBlob,
     fileSize: file.size,
     importedAt: Date.now(),
     lastOpenedAt: undefined,
